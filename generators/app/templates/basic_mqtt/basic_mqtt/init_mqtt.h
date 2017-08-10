@@ -7,6 +7,7 @@ extern String MQTT_USERNAME;
 extern String MQTT_PASSWORD;
 extern String MQTT_CLIENT_ID;
 extern String MQTT_PREFIX;
+extern char myName[];
 
 extern int MQTT_PORT;
 extern int PUBLISH_EVERY;
@@ -54,10 +55,14 @@ void init_mqtt()
   });
 
   mqtt->on_after_prepare_configuration([&](MqttConnector::Config config) -> void {
+    String humanTopic = MQTT_PREFIX + "/" + myName + "/$/+";
     Serial.printf("[USER] HOST = %s\r\n", config.mqttHost.c_str());
     Serial.printf("[USER] PORT = %d\r\n", config.mqttPort);
     Serial.printf("[USER] PUB  = %s\r\n", config.topicPub.c_str());
     Serial.printf("[USER] SUB  = %s\r\n", config.topicSub.c_str());
+    Serial.printf("[USER] SUB  = %s\r\n", humanTopic.c_str());
+    // sub->add_topic(MQTT_PREFIX + "/" + myName + "/$/+");
+    // sub->add_topic(MQTT_PREFIX + "/" + MQTT_CLIENT_ID + "/$/+");
   });
 
   register_publish_hooks();

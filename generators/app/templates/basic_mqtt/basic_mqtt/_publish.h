@@ -1,25 +1,27 @@
 #include <MqttConnector.h>
 
-extern int pin_state;
+extern int relayPinState;
 extern MqttConnector* mqtt;
+extern int relayPin;
+extern char myName[];
 
-static void read_sensor();
+static void readSensor();
 
-float sensor1_value;
-float sensor2_value;
+float sensorValue1;
+float sensorValue2;
 
-
-char myName[DEVICE_NAME_SIZE];
+extern String DEVICE_NAME;
+extern int PUBLISH_EVERY;
 
 void register_publish_hooks() {
-  strcpy(myName, DEVICE_NAME);
+  strcpy(myName, DEVICE_NAME.c_str());
   mqtt->on_prepare_data_once([&](void) {
-    sensor1_value = -1.0;
-    sensor1_value = -1.0;
+    sensorValue1 = -1.0;
+    sensorValue1 = -1.0;
   });
 
   mqtt->on_before_prepare_data([&](void) {
-    read_sensor();
+    readSensor();
   });
 
   mqtt->on_prepare_data([&](JsonObject * root) {
@@ -27,9 +29,9 @@ void register_publish_hooks() {
     JsonObject& info = (*root)["info"];
     data["myName"] = myName;
     data["millis"] = millis();
-    data["sensor1_value"] = sensor1_value;
-    data["sensor1_value"] = sensor2_value;
-    data["state"] = pin_state;
+    data["sensorValue1"] = sensorValue1;
+    data["sensorValue2"] = sensorValue2;
+    data["state"] = relayPinState;
   }, PUBLISH_EVERY);
 
   mqtt->on_after_prepare_data([&](JsonObject * root) {
@@ -41,7 +43,7 @@ void register_publish_hooks() {
   });
 }
 
-static void read_sensor() {
-  sensor1_value = millis()*0.5;
-  sensor2_value = millis()*0.75;
+static void readSensor() {
+  sensorValue1 = millis()*0.5;
+  sensorValue2 = millis()*0.75;
 }
