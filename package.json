@@ -1,7 +1,7 @@
 {
-  "name": "generator-cmmc-netpie-webapp",
-  "version": "0.0.5a",
-  "description": "CMMC NETPIE webapp generator",
+  "name": "generator-cmmc-esp8266-mqtt",
+  "version": "0.0.1a",
+  "description": "CMMC ESP8266 MQTT generator",
   "homepage": "cmmc.io",
   "author": {
     "name": "Nat",
@@ -53,6 +53,6 @@
       "node": true
     }
   },
-  "repository": "cmmakerclub/generator-cmmc-netpie-webapp",
+  "repository": "cmmakerclub/generator-cmmc-esp8266-mqtt",
   "license": "MIT"
 }

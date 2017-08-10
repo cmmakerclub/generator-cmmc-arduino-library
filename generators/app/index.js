@@ -107,47 +107,8 @@ module.exports = class extends Generator {
     this._writingMisc()
     this._writingGit()
     this._writingEditorConfig()
-    this._writingBower()
-    this._writingScripts()
-    this._writingStyles()
-    this._writingHtml()
     this._writingLibraries()
     this._writingConfig()
-  }
-
-  _writingStyles () {
-    let css = 'main.css'
-
-    this.fs.copyTpl(
-      this.templatePath(css),
-      this.destinationPath('app/styles/' + css))
-  }
-
-  _writingScripts () {
-    const templateOptions = {
-      appname: this.props.name,
-      appId: this.props.appId,
-      appKey: this.props.appKey,
-      appSecret: this.props.appSecret,
-      defaultTopic: this.props.defaultTopic,
-      deviceAlias: this.props.deviceAlias
-    }
-
-    this.fs.copyTpl(this.templatePath('main.js'), this.destinationPath('app/scripts/main.js'), templateOptions)
-  }
-
-  _writingHtml () {
-    const templateOptions = {
-      appname: this.props.name,
-      appId: this.props.appId,
-      appKey: this.props.appKey,
-      appSecret: this.props.appSecret,
-      defaultTopic: this.props.defaultTopic,
-      deviceAlias: this.props.deviceAlias
-    }
-
-    this.fs.copyTpl(this.templatePath('index.html'),
-      this.destinationPath('app/index.html'), templateOptions)
   }
 
   _writingConfig () {
@@ -174,26 +135,6 @@ module.exports = class extends Generator {
   _writingLibraries () {
     this.fs.copyTpl(this.templatePath('libs/microgear.js'),
       this.destinationPath('app/libs/microgear.js'))
-  }
-
-  _writingBower () {
-    const bowerJson = {
-      name: _s.slugify(this.appname),
-      private: true,
-      dependencies: {}
-    }
-
-    bowerJson.dependencies['jquery'] = '~2.1.4'
-    bowerJson.dependencies['bulma'] = '^0.5.0'
-    bowerJson.dependencies['moment-timezone'] = '^0.5.13'
-    bowerJson.dependencies['components-font-awesome'] = '^4.7.0'
-    // if (this.includeJQuery) {  }
-
-    this.fs.writeJSON('bower.json', bowerJson)
-    this.fs.copy(
-      this.templatePath('bowerrc'),
-      this.destinationPath('.bowerrc')
-    )
   }
 
   _writingEditorConfig () {
