@@ -9,25 +9,28 @@
 #include "_publish.h"
 #include "_receive.h"
 
+#define LED_BUILTIN <%= parseInt(ledPin, 10) %>
+
 MqttConnector *mqtt;
 
-/* WIFI INFO */
-String WIFI_SSID        = "belkin.636";
-String WIFI_PASSWORD    = "3eb7e66b";
-
-String MQTT_HOST        = "beta.cmmc.io";
-String MQTT_USERNAME    = "";
-String MQTT_PASSWORD    = "";
-String MQTT_CLIENT_ID   = "";
-String MQTT_PREFIX      = "MARU/";
-int    MQTT_PORT        = 51883;
-int PUBLISH_EVERY       = 10000;
-
-String DEVICE_NAME      = "NAT-001";
-int relayPin            = 15;
-int MQTT_CONNECT_TIMEOUT= 5000;
 char myName[40];
+int relayPin            = <%= parseInt(relayPin, 10) %>;
 int relayPinState;
+
+
+/* WIFI INFO */
+String WIFI_SSID        = "<%= wifiSsid %>";
+String WIFI_PASSWORD    = "<%= wifiPassword %>";
+
+String MQTT_HOST        = "<%= mqttHostName %>";
+String MQTT_USERNAME    = "<%= mqttUserName %>";
+String MQTT_PASSWORD    = "<%= mqttPassword %>";
+String MQTT_CLIENT_ID   = "<%= mqttClientId %>";
+String MQTT_PREFIX      = "<%= mqttPrefix %>";
+int    MQTT_PORT        = <%= parseInt(mqttPort, 10) %>;
+int PUBLISH_EVERY       = 1000L*<%= mqttPublishEverySeconds %>;
+
+String DEVICE_NAME      = "<%= mqttDeviceName %>";
 
 void init_hardware()
 {

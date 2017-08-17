@@ -16,6 +16,8 @@ extern int MQTT_CONNECT_TIMEOUT;
 extern void register_publish_hooks();
 extern void register_receive_hooks();
 
+int MQTT_CONNECT_TIMEOUT = 5000;
+
 // MQTT INITIALIZER
 void init_mqtt()
 {

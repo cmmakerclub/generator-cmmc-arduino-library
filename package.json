@@ -1,7 +1,7 @@
 {
-  "name": "generator-cmmc-esp8266-mqtt",
+  "name": "generator-cmmc-mqtt-connector",
   "version": "0.0.1a",
-  "description": "CMMC ESP8266 MQTT generator",
+  "description": "CMMC MQTT-Connector generator",
   "homepage": "cmmc.io",
   "author": {
     "name": "Nat",
@@ -53,6 +53,6 @@
       "node": true
     }
   },
-  "repository": "cmmakerclub/generator-cmmc-esp8266-mqtt",
+  "repository": "cmmakerclub/generator-cmmc-mqtt-connector",
   "license": "MIT"
 }

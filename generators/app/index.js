@@ -45,7 +45,7 @@ module.exports = class extends Generator {
 
   prompting () {
     // Have Yeoman greet the user.
-    this.log(yosay('Welcome to the best ' + chalk.red('generator-cmmc-netpie-webapp') + ' generator!'))
+    this.log(yosay('Welcome to the best ' + chalk.red('generator-cmmc-mqtt-connector') + ' generator!'))
 
     const prompts = [
       {
@@ -56,44 +56,70 @@ module.exports = class extends Generator {
       },
       {
         type: 'input',
-        name: 'appId',
-        message: 'Your netpie appId:',
-        default: this.config.get('appId'),
+        name: 'wifiSsid',
+        message: 'Your WIFI ssid',
+        default: this.config.get('wifiSsid') || 'belkin.636',
         validate: defaultValidators.notNull
       },
       {
         type: 'input',
-        name: 'appKey',
-        message: 'Your netpie appKey:',
-        default: this.config.get('appKey'),
+        name: 'wifiPassword',
+        message: 'Your WIFI password',
+        default: this.config.get('wifiPassword') || '3eb7e66b',
         validate: defaultValidators.notNull
       },
       {
         type: 'input',
-        name: 'appSecret',
-        default: this.config.get('appSecret'),
-        message: 'Your netpie appSecret:',
+        name: 'mqttHostName',
+        message: 'Your mqtt host name',
+        default: this.config.get('mqttHostName') || 'beta.cmmc.io',
         validate: defaultValidators.notNull
       },
       {
         type: 'input',
-        name: 'deviceAlias',
-        default: this.config.get('deviceAlias') || 'hello-cmmc-alias',
-        message: 'Your netpie device alias',
+        name: 'mqttPort',
+        message: 'Your mqtt port',
+        default: this.config.get('mqttPort') || '51883',
+        validate: defaultValidators.notNull
+      }, {
+        type: 'input',
+        name: 'mqttPrefix',
+        message: 'Your app prefix',
+        default: this.config.get('mqttPrefix') || 'MARU/',
+        validate: defaultValidators.notNull
+      }, {
+        type: 'input',
+        name: 'mqttDeviceName',
+        message: 'Your app device name',
+        default: this.config.get('mqttDeviceName') || 'YOUR-NAME-001',
+        validate: defaultValidators.notNull
+      }, {
+        type: 'input',
+        name: 'mqttPublishEverySeconds',
+        message: 'publish sensor data every (seconds)',
+        default: this.config.get('mqttPublishEverySeconds') || 10,
         validate: defaultValidators.notNull
       },
       {
         type: 'input',
-        name: 'defaultTopic',
-        default: this.config.get('defaultTopic') || '/gearname/topic1',
-        message: 'your default publish topic',
-        validate: function (input) {
-          if (input.indexOf('/gearname/') === 0) {
-            return true
-          } else {
-            return 'topic must be started with /gearname/'
-          }
-        }
+        name: 'mqttClientId',
+        message: 'your mqttClientId',
+        default: this.config.get('mqttClientId') || 'cmmc-mqtt-' + (10e3 * Math.random()).toFixed(4),
+        validate: defaultValidators.notNull
+      },
+      {
+        type: 'input',
+        name: 'ledPin',
+        message: 'led pin',
+        default: '2',
+        validate: defaultValidators.notNull
+      },
+      {
+        type: 'input',
+        name: 'relayPin',
+        message: 'relay pin',
+        default: '15',
+        validate: defaultValidators.notNull
       }
     ]
 
@@ -104,64 +130,61 @@ module.exports = class extends Generator {
   }
 
   writing () {
-    this._writingMisc()
     this._writingGit()
-    this._writingEditorConfig()
-    this._writingLibraries()
     this._writingConfig()
   }
 
   _writingConfig () {
     const templateOptions = {
       appname: this.props.name,
-      appId: this.props.appId,
-      appKey: this.props.appKey,
-      appSecret: this.props.appSecret,
-      defaultTopic: this.props.defaultTopic,
-      deviceAlias: this.props.deviceAlias
+      wifiSsid: this.props.wifiSsid,
+      wifiPassword: this.props.wifiPassword,
+      mqttHostName: this.props.mqttHostName,
+      mqttPort: this.props.mqttPort,
+      mqttUserName: this.props.mqttUserName,
+      mqttPassword: this.props.mqttPassword,
+      mqttPrefix: this.props.mqttPrefix,
+      mqttPublishEverySeconds: this.props.mqttPublishEverySeconds,
+      ledPin: this.props.ledPin,
+      relayPin: this.props.relayPin,
+      mqttClientId: this.props.mqttClientId,
+      mqttDeviceName: this.props.mqttDeviceName
     }
 
-    this.fs.copyTpl(this.templatePath('config.js'),
-      this.destinationPath('app/scripts/config.js'), templateOptions
+    this.fs.copyTpl(this.templatePath('basic_mqtt/_publish.h'),
+      this.destinationPath(this.props.name + '/_publish.h'), templateOptions
     )
-  }
-
-  _writingMisc () {
-    mkdirp('app/libs')
-    mkdirp('app/images')
-    mkdirp('app/fonts')
-  }
-
-  _writingLibraries () {
-    this.fs.copyTpl(this.templatePath('libs/microgear.js'),
-      this.destinationPath('app/libs/microgear.js'))
-  }
-
-  _writingEditorConfig () {
-    this.fs.copy(
-      this.templatePath('editorconfig'),
-      this.destinationPath('.editorconfig')
+    this.fs.copyTpl(this.templatePath('basic_mqtt/_receive.h'),
+      this.destinationPath(this.props.name + '/_receive.h'), templateOptions
     )
+    this.fs.copyTpl(this.templatePath('basic_mqtt/basic_mqtt.ino'),
+      this.destinationPath(this.props.name + '/' + this.props.name + '.ino'), templateOptions
+    )
+    this.fs.copyTpl(this.templatePath('basic_mqtt/init_mqtt.h'),
+      this.destinationPath(this.props.name + '/init_mqtt.h'), templateOptions
+    )
+    this.fs.copyTpl(this.templatePath('platformio.ini'),
+      this.destinationPath('platformio.ini'), templateOptions)
   }
 
   _writingGit () {
-    this.fs.copy(
-      this.templatePath('gitignore'),
-      this.destinationPath('.gitignore'))
-
-    this.fs.copy(
-      this.templatePath('gitattributes'),
-      this.destinationPath('.gitattributes'))
+    // this.fs.copy(
+    //   this.templatePath('gitignore'),
+    //   this.destinationPath('.gitignore'))
+    //
+    // this.fs.copy(
+    //   this.templatePath('gitattributes'),
+    //   this.destinationPath('.gitattributes'))
   }
 
   install () {
     // const commandExists = require('command-exists').sync
     // const hasYarn = commandExists('yarn')
-    this.installDependencies({
-      npm: false,
-      yarn: false,
-      bower: true
-    })
+    // this.installDependencies({
+    //   npm: false,
+    //   yarn: false,
+    //   bower: false
+    // })
   }
 
   end () {
