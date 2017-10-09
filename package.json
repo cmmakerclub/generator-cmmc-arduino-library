@@ -1,7 +1,7 @@
 {
-  "name": "generator-cmmc-mqtt-connector",
+  "name": "generator-cmmc-arduino-library",
   "version": "0.0.1a",
-  "description": "CMMC MQTT-Connector generator",
+  "description": "CMMC Arduino Library generator",
   "homepage": "cmmc.io",
   "author": {
     "name": "Nat",
@@ -53,6 +53,6 @@
       "node": true
     }
   },
-  "repository": "cmmakerclub/generator-cmmc-mqtt-connector",
+  "repository": "cmmakerclub/generator-cmmc-arduino-library",
   "license": "MIT"
 }
