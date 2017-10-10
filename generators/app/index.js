@@ -1,13 +1,16 @@
 'use strict'
-// import { defaultValidators } from './validators'
 
 const path = require('path')
 const Generator = require('yeoman-generator')
 const chalk = require('chalk')
 const yosay = require('yosay')
 const mkdirp = require('mkdirp')
-const _s = require('underscore.string')
+// const _s = require('underscore.string')
 const defaultValidators = require('./validators').defaultValidators
+
+const file = (name, path) => {
+  return {name, path}
+}
 
 module.exports = class extends Generator {
   // note: arguments and options should be defined in the constructor.
@@ -80,10 +83,6 @@ module.exports = class extends Generator {
     mkdirp(`${this.props.name}/examples`)
     mkdirp(`${this.props.name}/examples/example1`)
 
-    const file = (name, path) => {
-      return {name, path}
-    }
-
     let files = ['keywords.txt',
       'platformio.ini',
       'library.properties',
@@ -94,7 +93,6 @@ module.exports = class extends Generator {
     ]
 
     files.forEach((file, idx) => {
-      console.log(file)
       const src = this.templatePath(file.name || file)
       const dst = this.destinationPath(`${this.props.name}/${file.path || file}`)
       this.fs.copyTpl(src, dst, templateOptions)
@@ -102,23 +100,16 @@ module.exports = class extends Generator {
   }
 
   _writingGit () {
-    // this.fs.copy(
-    //   this.templatePath('gitignore'),
-    //   this.destinationPath('.gitignore'))
-    //
-    // this.fs.copy(
-    //   this.templatePath('gitattributes'),
-    //   this.destinationPath('.gitattributes'))
+    [file('gitignore', '.gitignore'),
+      file('gitattributes', '.gitattributes')
+    ].forEach((file, idx) => {
+      const src = this.templatePath(file.name || file)
+      const dst = this.destinationPath(`${this.props.name}/${file.path || file}`)
+      this.fs.copyTpl(src, dst)
+    })
   }
 
   install () {
-    // const commandExists = require('command-exists').sync
-    // const hasYarn = commandExists('yarn')
-    // this.installDependencies({
-    //   npm: false,
-    //   yarn: false,
-    //   bower: false
-    // })
   }
 
   end () {

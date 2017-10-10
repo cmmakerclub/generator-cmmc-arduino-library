@@ -10,21 +10,22 @@ extern "C" {
 }
 #endif
 
+enum <%=className%>_mode_t {
+    MODE_AP, MODE_STA
+};
+
 
 class <%= className %>
 {
 public:
- <%= className %>()
- {
+    <%=className%>_mode_t mode;
 
- }
- ~<%= className %>()
- {
+    // constructure
+    <%= className %>() {}
     
- }
- void setup() {
-
- }
+    ~<%= className %>() {}
+    
+    void setup();
 
 };
 
