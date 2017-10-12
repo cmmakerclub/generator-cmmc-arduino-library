@@ -17,7 +17,7 @@ yo cmmc-arduino-library libname
 
 ## License
 
-MIT © [Nat]()
+MIT © [Nat](cmmakerclub.com)
 
 
 [npm-image]: https://badge.fury.io/js/generator-cmmc-arduino-library.svg
