@@ -2,13 +2,13 @@
 #define <%= className %>_H
 
 #include <Arduino.h>
-#include "ESP8266WiFi.h"
-#include <functional>
 
 #ifdef ESP8266
-extern "C" {
-  #include "user_interface.h"
-}
+  extern "C" {
+    #include "user_interface.h"
+  }
+  #include "ESP8266WiFi.h"
+  #include <functional>
 #endif
 
 typedef void (*cmmc_debug_cb_t)(const char* message);
