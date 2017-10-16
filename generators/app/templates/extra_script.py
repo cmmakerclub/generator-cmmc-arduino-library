@@ -13,7 +13,7 @@ def before_upload(source, target, env):
 
 def after_upload(source, target, env):
     print "after_upload"
-    shutil.rmtree("lib-dev/<%= className %>")
+    #shutil.rmtree("lib-dev/<%= className %>")
 
 def before_build(source, target, env):
     print "before_build"
