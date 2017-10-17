@@ -3,6 +3,11 @@
 
 #include <Arduino.h>
 
+
+#ifndef CMMC_NO_ALIAS
+  #define <%= className %> <%= className %>
+#endif
+
 #ifdef ESP8266
   extern "C" {
     #include "user_interface.h"
