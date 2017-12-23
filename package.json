@@ -1,6 +1,6 @@
 {
   "name": "generator-cmmc-arduino-library",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "CMMC Arduino Library generator",
   "homepage": "cmmc.io",
   "author": {
